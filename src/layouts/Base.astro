@@ -1,0 +1,419 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogType?: string;
+  ogImage?: string;
+  jsonLd?: object | object[];
+}
+
+const { title, description, canonical, ogType = 'website', ogImage, jsonLd } = Astro.props;
+const siteName = '出海合规观察';
+const fullTitle = title === siteName ? title : `${title} | ${siteName}`;
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: siteName,
+  url: Astro.site?.href,
+  description:
+    '面向出海中国中小企业的海外法律合规与知识产权纠纷案例解读平台,覆盖欧盟、东南亚、中东、拉美市场。',
+  knowsAbout: [
+    '跨境电商合规', '欧盟CE认证', 'GPSR通用产品安全法规', 'GDPR',
+    '海外商标抢注', '知识产权侵权诉讼', '海关知识产权保护',
+    '东南亚产品认证', '中东SABER认证', '拉美INMETRO认证',
+  ],
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteName,
+  url: Astro.site?.href,
+  inLanguage: 'zh-CN',
+};
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content="zh_CN" />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+
+    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+    {jsonLd && (
+      Array.isArray(jsonLd)
+        ? jsonLd.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)
+        : <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
+    <style is:global>
+      /* ============ 设计体系:卷宗/案牍编辑风格 ============
+         色板: 纸白 #faf7f0 · 墨藏蓝 #16283f · 朱砂印泥 #b93a2a
+               灰墨 #5d6a7a · 卷宗细线 #ddd5c7
+         字体: 标题宋体(法律文书感) · 正文黑体 · 元信息等宽(打字机感)
+         签名元素: 朱砂方印章栏目记 + 卷宗式元信息栏
+      ================================================== */
+      :root {
+        --paper: #faf7f0;
+        --ink: #16283f;
+        --ink-soft: #31445c;
+        --seal: #b93a2a;
+        --seal-deep: #992f22;
+        --muted: #5d6a7a;
+        --rule: #ddd5c7;
+        --card: #fffdf8;
+        --serif: "Songti SC", "STSong", "Noto Serif SC", "SimSun", serif;
+        --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+        --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+        --max-w: 44rem;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: var(--sans);
+        color: var(--ink);
+        background: var(--paper);
+        line-height: 1.85;
+        font-size: 16.5px;
+        -webkit-font-smoothing: antialiased;
+      }
+      ::selection { background: var(--seal); color: #fff; }
+      .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 1.25rem; }
+      main.wrap { padding-top: 1.8rem; }
+      a { color: var(--seal); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+      a:hover { color: var(--seal-deep); }
+      a:focus-visible, summary:focus-visible {
+        outline: 2px solid var(--seal);
+        outline-offset: 2px;
+      }
+
+      /* ---------- 站头 ---------- */
+      header.site {
+        border-bottom: 2px solid var(--ink);
+        background: var(--card);
+        padding: 0.9rem 0;
+      }
+      header.site .wrap {
+        max-width: 62rem;
+        display: flex; align-items: baseline; gap: 1.6rem; flex-wrap: wrap;
+      }
+      .brand {
+        font-family: var(--serif);
+        font-weight: 900;
+        font-size: 1.35rem;
+        letter-spacing: 0.06em;
+        text-decoration: none;
+        color: var(--ink);
+        display: inline-flex; align-items: center; gap: 0.55rem;
+      }
+      .brand .seal-dot {
+        width: 0.9em; height: 0.9em;
+        background: var(--seal);
+        border-radius: 1px;
+        transform: rotate(-4deg);
+        flex: none;
+      }
+      header.site nav { display: flex; gap: 1.3rem; font-size: 0.95rem; margin-left: auto; }
+      header.site nav a {
+        text-decoration: none; color: var(--ink-soft);
+        padding-bottom: 2px;
+        border-bottom: 1px solid transparent;
+      }
+      header.site nav a:hover { color: var(--seal); border-bottom-color: var(--seal); }
+
+      /* ---------- 印章栏目记(签名元素) ---------- */
+      .seal {
+        display: inline-flex; align-items: center; justify-content: center;
+        font-family: var(--serif);
+        font-weight: 700;
+        background: var(--seal);
+        color: #fdf8f2;
+        border-radius: 2px;
+        box-shadow: inset 0 0 0 1.5px rgba(253, 248, 242, 0.55);
+        transform: rotate(-2.5deg);
+        line-height: 1;
+        letter-spacing: 0.08em;
+      }
+      .seal.sm { font-size: 0.72rem; padding: 0.38em 0.5em; }
+      .seal.lg { font-size: 0.95rem; padding: 0.5em 0.62em; }
+
+      /* ---------- 文章排版 ---------- */
+      article h1 {
+        font-family: var(--serif);
+        font-weight: 900;
+        font-size: 1.85rem;
+        line-height: 1.45;
+        margin: 0.6em 0 0.8em;
+        letter-spacing: 0.01em;
+      }
+      article h2 {
+        font-family: var(--serif);
+        font-weight: 700;
+        font-size: 1.32rem;
+        margin: 2.4em 0 0.9em;
+        padding-top: 0.9em;
+        border-top: 2px solid var(--ink);
+        position: relative;
+      }
+      article h2::before {
+        content: "";
+        position: absolute;
+        top: -2px; left: 0;
+        width: 3.2rem;
+        border-top: 2px solid var(--seal);
+      }
+      article h3 { font-size: 1.08rem; font-weight: 700; margin: 1.8em 0 0.6em; color: var(--ink-soft); }
+      article p { margin: 0.9em 0; }
+      article strong { color: var(--ink); }
+      article img { max-width: 100%; height: auto; }
+      article ul, article ol { padding-left: 1.4em; }
+      article li { margin: 0.35em 0; }
+      article table {
+        border-collapse: collapse; width: 100%;
+        font-size: 0.9rem; margin: 1.4em 0;
+        background: var(--card);
+      }
+      article th, article td {
+        border: 1px solid var(--rule);
+        padding: 0.55em 0.75em; text-align: left; vertical-align: top;
+      }
+      article th {
+        background: var(--ink); color: #f5f0e6;
+        font-weight: 600; font-size: 0.85rem; letter-spacing: 0.04em;
+      }
+      article blockquote {
+        margin: 1.4em 0; padding: 0.2em 0 0.2em 1.1em;
+        border-left: 3px solid var(--seal);
+        color: var(--ink-soft);
+      }
+
+      /* ---------- 卷宗元信息栏 ---------- */
+      .dossier {
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        color: var(--muted);
+        border-top: 1px solid var(--rule);
+        border-bottom: 1px solid var(--rule);
+        padding: 0.55em 0;
+        display: flex; flex-wrap: wrap; gap: 0.4em 1.6em;
+        letter-spacing: 0.02em;
+      }
+      .dossier .k { color: var(--seal); font-weight: 600; }
+
+      /* ---------- TL;DR 核心结论 ---------- */
+      .tldr {
+        background: var(--card);
+        border: 1px solid var(--rule);
+        border-left: 4px solid var(--seal);
+        padding: 1.1rem 1.3rem;
+        margin: 1.6rem 0 2rem;
+        box-shadow: 3px 3px 0 rgba(22, 40, 63, 0.06);
+      }
+      .tldr .label {
+        display: flex; align-items: center; gap: 0.5em;
+        font-family: var(--mono);
+        font-size: 0.75rem; font-weight: 600;
+        color: var(--seal);
+        letter-spacing: 0.12em;
+        margin-bottom: 0.5em;
+      }
+      .tldr .label::after {
+        content: ""; flex: 1; border-top: 1px dashed var(--rule);
+      }
+      .tldr p { margin: 0; font-size: 0.98rem; color: var(--ink-soft); }
+
+      /* ---------- 头图 ---------- */
+      figure.hero {
+        margin: 1.8rem 0 2.2rem;
+        border: 1px solid var(--rule);
+        padding: 0.5rem;
+        background: var(--card);
+        box-shadow: 4px 4px 0 rgba(22, 40, 63, 0.07);
+      }
+      figure.hero img { display: block; width: 100%; height: auto; }
+      figure.hero figcaption {
+        font-family: var(--mono);
+        font-size: 0.72rem; color: var(--muted);
+        padding: 0.5em 0.2em 0.1em;
+        letter-spacing: 0.04em;
+      }
+
+      /* ---------- FAQ ---------- */
+      .faq { margin-top: 2.8rem; }
+      .faq h2 { border-top: 2px solid var(--ink); }
+      .faq details {
+        background: var(--card);
+        border: 1px solid var(--rule);
+        border-left: 3px solid var(--ink);
+        padding: 0.85rem 1.15rem;
+        margin-bottom: 0.7rem;
+      }
+      .faq details[open] { border-left-color: var(--seal); }
+      .faq summary {
+        font-weight: 700; cursor: pointer; font-size: 0.98rem;
+        list-style-position: outside;
+      }
+      .faq details p { color: var(--ink-soft); font-size: 0.94rem; margin-bottom: 0.2em; }
+
+      /* ---------- 来源 ---------- */
+      .sources {
+        font-size: 0.85rem; color: var(--muted);
+        margin-top: 3rem; border-top: 2px solid var(--ink);
+        padding-top: 1.2rem;
+      }
+      .sources h2 {
+        font-size: 0.85rem; font-family: var(--mono);
+        letter-spacing: 0.12em; color: var(--seal);
+        border: none; padding: 0; margin: 0 0 0.8em;
+      }
+      .sources h2::before { display: none; }
+      .sources ul { padding-left: 1.2em; }
+      .sources .disclaimer { margin-top: 1em; font-style: italic; }
+
+      /* ---------- 首页/列表卡片 ---------- */
+      .card {
+        display: block;
+        background: var(--card);
+        border: 1px solid var(--rule);
+        padding: 1.2rem 1.35rem;
+        margin-bottom: 1.1rem;
+        text-decoration: none;
+        color: var(--ink);
+        box-shadow: 3px 3px 0 rgba(22, 40, 63, 0.05);
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      }
+      .card:hover {
+        border-color: var(--ink);
+        transform: translate(-2px, -2px);
+        box-shadow: 5px 5px 0 rgba(185, 58, 42, 0.18);
+      }
+      .card .card-head { display: flex; align-items: flex-start; gap: 0.8rem; }
+      .card h3 {
+        font-family: var(--serif); font-weight: 700;
+        margin: 0; font-size: 1.12rem; line-height: 1.55; flex: 1;
+      }
+      .card p { margin: 0.55rem 0 0; color: var(--muted); font-size: 0.92rem; }
+      .card .thumb {
+        width: 132px; flex: none; margin: -0.2rem -0.3rem 0 0;
+        border: 1px solid var(--rule);
+      }
+      .card .thumb img { display: block; width: 100%; height: auto; }
+      .card .meta-line {
+        font-family: var(--mono); font-size: 0.74rem;
+        color: var(--muted); margin-top: 0.7rem;
+        display: flex; flex-wrap: wrap; gap: 0.5em 1.2em;
+      }
+      .tag {
+        display: inline-block;
+        font-family: var(--mono); font-size: 0.72rem;
+        border: 1px solid var(--rule); border-radius: 2px;
+        padding: 0.08em 0.55em;
+        color: var(--muted); background: var(--paper);
+      }
+
+      /* ---------- 首页刊头 ---------- */
+      .masthead { text-align: left; padding: 1.2rem 0 0.5rem; }
+      .masthead .kicker {
+        font-family: var(--mono); font-size: 0.78rem;
+        color: var(--seal); letter-spacing: 0.22em; font-weight: 600;
+      }
+      .masthead h1 {
+        font-family: var(--serif); font-weight: 900;
+        font-size: 2.6rem; line-height: 1.25;
+        margin: 0.25em 0 0.35em; letter-spacing: 0.02em;
+      }
+      .masthead .sub {
+        font-size: 1.02rem; color: var(--ink-soft);
+        max-width: 40rem; margin: 0;
+      }
+      .masthead .markets {
+        font-family: var(--mono); font-size: 0.78rem; color: var(--muted);
+        margin-top: 1.1rem; display: flex; flex-wrap: wrap; gap: 0.5em 1.4em;
+      }
+      .section-head {
+        display: flex; align-items: baseline; gap: 0.8rem;
+        border-top: 2px solid var(--ink);
+        margin-top: 2.8rem; padding-top: 0.8rem;
+      }
+      .section-head h2 {
+        font-family: var(--serif); font-size: 1.3rem; font-weight: 700; margin: 0;
+      }
+      .section-head .count { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
+
+      /* ---------- 站脚 ---------- */
+      footer.site {
+        border-top: 2px solid var(--ink);
+        margin-top: 4.5rem;
+        padding: 1.6rem 0 3rem;
+        font-size: 0.83rem;
+        color: var(--muted);
+        background: var(--card);
+      }
+      footer.site .wrap { max-width: 62rem; }
+      footer.site .foot-mark {
+        font-family: var(--serif); font-weight: 900; color: var(--ink);
+        font-size: 1rem; letter-spacing: 0.06em; margin-bottom: 0.4em;
+      }
+
+      @media (max-width: 560px) {
+        .masthead h1 { font-size: 2rem; }
+        article h1 { font-size: 1.5rem; }
+        .card .thumb { width: 96px; }
+        header.site nav { margin-left: 0; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .card { transition: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site">
+      <div class="wrap">
+        <a class="brand" href="/"><span class="seal-dot" aria-hidden="true"></span>出海合规观察</a>
+        <nav>
+          <a href="/cases/">案例分析</a>
+          <a href="/guides/">法规解读</a>
+          <a href="/checklists/">风险清单</a>
+          <a href="/about/">关于</a>
+        </nav>
+      </div>
+    </header>
+    <main class="wrap">
+      <slot />
+    </main>
+    <footer class="site">
+      <div class="wrap">
+        <p class="foot-mark">出海合规观察</p>
+        <p>服务有海外业务的中国中小企业:用真实案例,把出海路上的法律风险提前讲清楚。本站内容为合规知识普及与公开案例分析,不构成法律意见;具体案件请咨询执业律师。</p>
+        <p>覆盖市场:欧盟 · 东南亚 · 中东 · 拉美 &nbsp;|&nbsp; <a href="/llms.txt">llms.txt</a> · <a href="/sitemap-index.xml">Sitemap</a></p>
+      </div>
+    </footer>
+    <!-- Cloudflare Web Analytics -->
+    <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "b283e5e4e20e4dd3ad9cad921d6d648a"}'></script>
+    <!-- End Cloudflare Web Analytics -->
+  </body>
+</html>

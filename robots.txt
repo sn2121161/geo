@@ -1,0 +1,62 @@
+# robots.txt —— 出海合规观察
+# 策略:欢迎搜索引擎与主流 AI 爬虫抓取(GEO 核心:先让 AI 找到你)
+
+User-agent: *
+Allow: /
+
+# ---- 国际 AI 爬虫 ----
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+# ---- 国内 AI / 搜索爬虫 ----
+User-agent: Bytespider
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Sogou web spider
+Allow: /
+
+User-agent: 360Spider
+Allow: /
+
+User-agent: PetalBot
+Allow: /
+
+Sitemap: https://oversea-observe.online/sitemap-index.xml
+# llms.txt 为 AI 提供全站内容索引(见 https://llmstxt.org)
+# AI-Index: https://oversea-observe.online/llms.txt

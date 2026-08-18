@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const categories = [
+    { slug: 'cases', name: '案例分析', desc: '真实出海纠纷与知识产权侵权案件深度解读:案情、金额、结果与中小企业启示。' },
+    { slug: 'guides', name: '法规解读', desc: '欧盟、东南亚、中东、拉美产品合规、认证、数据与报关要求的实操解读。' },
+    { slug: 'checklists', name: '风险清单', desc: '按市场与行业分类的出海前合规自查清单。' },
+  ];
+  return categories.map((c) => ({ params: { category: c.slug }, props: c }));
+}
+
+const { slug, name, desc } = Astro.props;
+const nameToSlug: Record<string, string> = { 案例分析: 'cases', 法规解读: 'guides', 风险清单: 'checklists' };
+
+const articles = (
+  await getCollection('articles', ({ data }) => !data.draft && nameToSlug[data.category] === slug)
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<Base title={name} description={desc}>
+  <div class="masthead">
+    <p class="kicker">{slug.toUpperCase()}</p>
+    <h1 style="font-size:2rem;"><span class="seal lg" style="margin-right:0.6rem;">{name}</span></h1>
+    <p class="sub">{desc}</p>
+  </div>
+
+  <div style="margin-top:2rem;">
+    {articles.length === 0 && <p class="meta">内容筹备中。</p>}
+    {articles.map((a) => (
+      <a class="card" href={`/${slug}/${a.id}/`}>
+        <div class="card-head">
+          <h3>{a.data.title}</h3>
+          {a.data.heroImage && (
+            <span class="thumb"><img src={a.data.heroImage} alt="" loading="lazy" width="264" height="176" /></span>
+          )}
+        </div>
+        <p>{a.data.description}</p>
+        <p class="meta-line">
+          <span>{iso(a.data.pubDate)}</span>
+          {a.data.markets.map((m) => <span class="tag">{m}</span>)}
+        </p>
+      </a>
+    ))}
+  </div>
+</Base>

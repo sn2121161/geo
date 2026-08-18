@@ -1,0 +1,120 @@
+---
+import Base from './Base.astro';
+
+interface Faq { q: string; a: string }
+interface Source { name: string; url: string }
+
+interface Props {
+  title: string;
+  description: string;
+  tldr: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  category: string;
+  heroImage?: string;
+  markets: string[];
+  tags: string[];
+  faqs: Faq[];
+  sources: Source[];
+}
+
+const { title, description, tldr, pubDate, updatedDate, category, heroImage, markets, tags, faqs, sources } =
+  Astro.props;
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  inLanguage: 'zh-CN',
+  datePublished: pubDate.toISOString(),
+  ...(updatedDate && { dateModified: updatedDate.toISOString() }),
+  ...(heroImage && { image: new URL(heroImage, Astro.site).href }),
+  author: { '@type': 'Organization', name: '出海合规观察' },
+  publisher: { '@type': 'Organization', name: '出海合规观察' },
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).href,
+  keywords: [...tags, ...markets].join(', '),
+};
+
+const faqSchema = faqs.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    }
+  : null;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首页', item: Astro.site?.href },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: category,
+      item: new URL(Astro.url.pathname.split('/').slice(0, 2).join('/') + '/', Astro.site).href,
+    },
+    { '@type': 'ListItem', position: 3, name: title },
+  ],
+};
+
+const schemas = [articleSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])];
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<Base title={title} description={description} ogType="article" ogImage={heroImage} jsonLd={schemas}>
+  <article>
+    <p style="margin:0 0 0.2rem;"><span class="seal lg">{category}</span></p>
+    <h1>{title}</h1>
+
+    <div class="dossier">
+      <span><span class="k">刊发</span> {iso(pubDate)}</span>
+      {updatedDate && <span><span class="k">修订</span> {iso(updatedDate)}</span>}
+      {markets.length > 0 && <span><span class="k">涉及市场</span> {markets.join(' / ')}</span>}
+      {tags.length > 0 && <span><span class="k">索引</span> {tags.join(' · ')}</span>}
+    </div>
+
+    {heroImage && (
+      <figure class="hero">
+        <img src={heroImage} alt={title} width="1400" height="933" loading="eager" />
+        <figcaption>题图:出海合规观察原创插画</figcaption>
+      </figure>
+    )}
+
+    <div class="tldr">
+      <span class="label">核心结论</span>
+      <p>{tldr}</p>
+    </div>
+
+    <slot />
+
+    {faqs.length > 0 && (
+      <section class="faq">
+        <h2>常见问题</h2>
+        {faqs.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </section>
+    )}
+
+    {sources.length > 0 && (
+      <section class="sources">
+        <h2>参考来源</h2>
+        <ul>
+          {sources.map((s) => (
+            <li><a href={s.url} rel="noopener noreferrer">{s.name}</a></li>
+          ))}
+        </ul>
+        <p class="disclaimer">本文基于公开资料整理,不构成法律意见。文中信息以发布日为准,法规可能已更新。</p>
+      </section>
+    )}
+  </article>
+</Base>

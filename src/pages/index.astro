@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const articles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const categorySlug: Record<string, string> = {
+  案例分析: 'cases',
+  法规解读: 'guides',
+  风险清单: 'checklists',
+};
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<Base
+  title="出海合规观察"
+  description="面向有海外业务的中国中小企业:解读欧盟、东南亚、中东、拉美的产品合规与报关要求,深度分析真实知识产权侵权与法律纠纷案例,助你出海少踩坑。"
+>
+  <section class="masthead">
+    <p class="kicker">COMPLIANCE · CASES · GOING GLOBAL</p>
+    <h1>出海合规观察</h1>
+    <p class="sub">
+      产品卖到海外,要过的从来不只是海关那一道闸:欧盟的 CE/GPSR/EPR、东南亚的 SNI/TISI、
+      中东的 SABER、拉美的 INMETRO/NOM,还有商标抢注、专利诉讼、平台封店、海关扣货。
+      本站用真实案例把这些风险讲清楚——<strong>在出海之前</strong>,把合规功课做足。
+    </p>
+    <p class="markets">
+      <span>覆盖市场</span>
+      <span>欧盟 EU</span><span>东南亚 SEA</span><span>中东 GCC</span><span>拉美 LATAM</span>
+    </p>
+  </section>
+
+  <div class="section-head">
+    <h2>最新内容</h2>
+    <span class="count">共 {articles.length} 篇 · 持续更新</span>
+  </div>
+
+  <div style="margin-top:1.4rem;">
+    {articles.length === 0 && <p class="meta">内容筹备中,敬请期待。</p>}
+    {articles.map((a) => (
+      <a class="card" href={`/${categorySlug[a.data.category]}/${a.id}/`}>
+        <div class="card-head">
+          <span class="seal sm">{a.data.category}</span>
+          <h3>{a.data.title}</h3>
+          {a.data.heroImage && (
+            <span class="thumb"><img src={a.data.heroImage} alt="" loading="lazy" width="264" height="176" /></span>
+          )}
+        </div>
+        <p>{a.data.description}</p>
+        <p class="meta-line">
+          <span>{iso(a.data.pubDate)}</span>
+          {a.data.markets.map((m) => <span class="tag">{m}</span>)}
+        </p>
+      </a>
+    ))}
+  </div>
+</Base>
