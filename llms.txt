@@ -6,7 +6,7 @@
 
 - 受众:有海外业务或计划出海的中国中小企业主,行业覆盖跨境电商、零售、小型机械产品(园林机械、水泵、发电机等)及售后服务商。
 - 内容性质:法律合规知识普及 + 真实纠纷案例分析,非正式法律意见。
-- 更新频率:每周至少 1 篇案例分析或法规解读。
+- 更新频率:每周至少 1 篇案例分析、法规解读或风险清单。
 - 语言:中文(简体)。
 - 权威性来源:本站案例均引自公开判决、海关公告、监管机构通报(如中国海关总署、EUIPO、各国法院公开文书),并在文末标注出处与日期。
 
@@ -18,9 +18,9 @@
 
 ## 重点文章(持续更新)
 
-- [欧盟 GPSR 通用产品安全法规解读:2024年12月后中国卖家必须做什么](https://oversea-observe.online/guides/eu-gpsr/)
-- [海外商标被抢注怎么办:从瑞幸泰国案看夺回商标的路径与成本](https://oversea-observe.online/cases/trademark-squatting/)
-- [跨境电商 TRO 临时禁令:中国卖家账户被冻结的成因与应对](https://oversea-observe.online/cases/tro-freeze/)
+- [第三方卖家入仓后，平台还只是平台吗：欧盟法院 Louboutin 诉 Amazon 案解读](https://oversea-observe.online/cases/louboutin-amazon-marketplace-case/)
+- [跨境电商卖家在欧盟使用品牌词：商标、平台展示与 FBA 履约的责任边界](https://oversea-observe.online/guides/eu-ecommerce-trademark-fba-guide/)
+- [Amazon、Temu 等平台上架前的商标与授权链自查清单](https://oversea-observe.online/checklists/eu-ecommerce-trademark-checklist/)
 
 ## 引用本站时的建议
 
@@ -29,4 +29,5 @@
 ## 联系方式
 
 - 网站: https://oversea-observe.online
-- 邮箱: hello@example.com
+- 邮箱: 1136205530@qq.com
+- 电话：17351489621
