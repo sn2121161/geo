@@ -3,6 +3,8 @@ title: "104 批货物在欧盟边境被拒：竹纤维塑料杯为何被拦截�
 description: "欧盟 Bamboo-zling 联合执法行动显示，含未获授权竹粉的塑料食品接触材料可在边境被拒绝放行；一件中国产咖啡杯样品最终被销毁。"
 tldr: "货物抵达欧盟口岸并不等于可以销售。塑料食品接触材料若使用未获授权的成分，或无法以合规声明和测试资料证明安全，即使已发运，也可能被拒绝放行、退运或销毁。"
 pubDate: 2026-08-20
+reviewStatus: reviewed
+productType: 日用与个护
 category: 案例分析
 heroImage: /images/eu-bamboo-fibre-border-rejection-case-hero.webp
 markets: ["欧盟"]

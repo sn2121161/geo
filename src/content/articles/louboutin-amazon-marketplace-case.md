@@ -3,6 +3,8 @@ title: "第三方卖家入仓后，平台还只是平台吗：欧盟法院 Loubo
 description: "欧盟法院 2022 年 Louboutin 诉 Amazon 合并案指出：当平台的统一展示、品牌标识、仓储和配送，使普通消费者认为商品由平台自行销售时，平台可能被认定为使用了第三方卖家广告中的侵权商标。"
 tldr: "把商品交给平台仓储和配送，不会替卖家消灭商标风险。欧盟法院在 C-148/21、C-184/21 案中指出：如果普通消费者会认为第三方商品由平台以自己的名义销售，平台也可能被视为使用了广告中的商标。对卖家而言，品牌词、主图、授权链和入仓资料必须在上架前闭环。"
 pubDate: 2026-08-18
+reviewStatus: reviewed
+productType: 鞋服用品
 category: 案例分析
 heroImage: /images/louboutin-amazon-marketplace-hero.webp
 markets: ["欧盟"]

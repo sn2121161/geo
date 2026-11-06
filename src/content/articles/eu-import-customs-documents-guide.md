@@ -3,6 +3,8 @@ title: "中小企业把货运到欧盟：入关规则、报关资料与合规文
 description: "从 EORI、海关申报到商业发票、装箱单、商品编码和产品合规证明，拆解中国中小企业向欧盟发货前应准备的资料。"
 tldr: "欧盟进口申报的核心不是“凑齐几张单据”，而是让申报数据、交易单据和产品合规证据指向同一批货。标准海关申报必须含完整必要数据，支撑文件应在申报时已由申报人持有并可供海关调取。"
 pubDate: 2026-08-20
+reviewStatus: reviewed
+productType: 跨品类通用
 category: 法规解读
 heroImage: /images/eu-import-customs-documents-guide-hero.webp
 markets: ["欧盟"]

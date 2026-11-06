@@ -3,6 +3,8 @@ title: "逾 90 万片仿冒刀片被查：涉中国货源的欧盟个护用品�
 description: "OLAF 与西班牙、意大利执法部门在 2024 年公布的一宗行动中，查获逾 90 万片仿冒剃须刀刀片；公开资料显示，涉案网络从中国采购货物，再经中间收货公司进入欧盟。"
 tldr: "日用品体积小、单价低，并不意味着商标执法风险低。OLAF 公布的仿冒刀片行动显示，使用中间收货公司、仓库和批发渠道，仍可能让货物被查扣，相关人员被调查或逮捕。公开公告未披露中国出口商身份，也未说明其是否被单独处罚。"
 pubDate: 2026-09-01
+reviewStatus: reviewed
+productType: 日用与个护
 category: 案例分析
 heroImage: /images/eu-counterfeit-razor-blades-olaf-case-hero.webp
 markets: ["欧盟"]

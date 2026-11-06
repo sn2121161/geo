@@ -1,4 +1,6 @@
 ---
+import { site } from '../lib/site';
+
 interface Props {
   title: string;
   description: string;
@@ -8,8 +10,10 @@ interface Props {
   jsonLd?: object | object[];
 }
 
-const { title, description, canonical, ogType = 'website', ogImage, jsonLd } = Astro.props;
-const siteName = '出海合规观察';
+const { title, description, canonical, ogType = 'website', ogImage = '/images/brand-share.png', jsonLd } = Astro.props;
+const siteName = site.name;
+const orgId = new URL('/#organization', Astro.site).href;
+const websiteId = new URL('/#website', Astro.site).href;
 const fullTitle = title === siteName ? title : `${title} | ${siteName}`;
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).href;
 const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
@@ -17,10 +21,11 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': orgId,
   name: siteName,
   url: Astro.site?.href,
   description:
-    '面向出海中国中小企业的海外法律合规与知识产权纠纷案例解读平台,覆盖欧盟、东南亚、中东、拉美市场。',
+    '面向中国出海中小企业的合规与纠纷案例解读站点，关注欧盟、东南亚、中东和拉美市场。',
   knowsAbout: [
     '跨境电商合规', '欧盟CE认证', 'GPSR通用产品安全法规', 'GDPR',
     '海外商标抢注', '知识产权侵权诉讼', '海关知识产权保护',
@@ -31,6 +36,8 @@ const orgSchema = {
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': websiteId,
+  publisher: { '@id': orgId },
   name: siteName,
   url: Astro.site?.href,
   inLanguage: 'zh-CN',
@@ -105,7 +112,7 @@ const websiteSchema = {
       main.wrap { padding-top: 1.8rem; }
       a { color: var(--seal); text-decoration-thickness: 1px; text-underline-offset: 3px; }
       a:hover { color: var(--seal-deep); }
-      a:focus-visible, summary:focus-visible {
+      button:focus-visible, a:focus-visible, summary:focus-visible {
         outline: 2px solid var(--seal);
         outline-offset: 2px;
       }
@@ -381,10 +388,28 @@ const websiteSchema = {
       footer.site .icp-record a { color: inherit; text-decoration: none; }
       footer.site .icp-record a:hover { color: var(--seal); text-decoration: underline; }
 
+      .market-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.6rem; margin: 1.4rem 0; }
+      .market-tabs button { border: 1px solid var(--rule); background: var(--card); color: var(--ink); padding: 0.7rem 1rem; font: inherit; cursor: pointer; }
+      .market-tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+      .market-tabs small { display: block; font-size: 0.7rem; }
+      .product-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 1.4rem; width: 100%; }
+      .product-filters button { flex: 1 1 0; justify-content: center; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.45rem; border: 1px solid var(--rule); background: var(--card); color: var(--ink-soft); padding: 0.4rem 0.7rem; font: inherit; font-size: 0.84rem; cursor: pointer; }
+      .product-filters button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+      .product-filters button span { font-family: var(--mono); font-size: 0.75rem; opacity: 0.8; }
+      [hidden] { display: none !important; }
+      .review-notice { border: 2px solid var(--seal); padding: 0.8rem 1rem; background: var(--card); }
+      .article-credit { color: var(--muted); font-size: 0.85rem; }
       @media (max-width: 560px) {
         .masthead h1 { font-size: 2rem; }
         article h1 { font-size: 1.5rem; }
-        .card .thumb { width: 96px; }
+        .card { padding: 1rem; }
+        .card .card-head { flex-wrap: wrap; }
+        .card .card-head > .seal { margin-right: 100%; white-space: nowrap; }
+        .card h3 { min-width: 0; overflow-wrap: anywhere; }
+        .card .thumb { width: 76px; margin: 0; }
+        article table { display: block; overflow-x: auto; }
+        .product-filters button { flex: 1 1 40%; }
+        .market-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.35rem; }
         header.site nav { margin-left: 0; }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -411,8 +436,8 @@ const websiteSchema = {
     <footer class="site">
       <div class="wrap">
         <p class="foot-mark">出海合规观察</p>
-        <p>服务有海外业务的中国中小企业:用真实案例,把出海路上的法律风险提前讲清楚。本站内容为合规知识普及与公开案例分析,不构成法律意见;具体案件请咨询执业律师。</p>
-        <p>覆盖市场:欧盟 · 东南亚 · 中东 · 拉美 &nbsp;|&nbsp; <a href="/llms.txt">llms.txt</a> · <a href="/sitemap-index.xml">Sitemap</a></p>
+        <p>服务有海外业务的中国中小企业：用真实案例，把出海路上的法律风险提前讲清楚。本站内容为合规知识普及与公开案例分析，不构成法律意见；具体案件请咨询执业律师。</p>
+        <p>关注市场：欧盟 · 东南亚 · 中东 · 拉美 &nbsp;|&nbsp; <a href="/llms.txt">llms.txt</a> · <a href="/sitemap-index.xml">Sitemap</a></p>
         <p class="icp-record"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">苏ICP备2026061248号</a></p>
       </div>
     </footer>

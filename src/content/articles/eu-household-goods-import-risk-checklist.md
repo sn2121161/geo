@@ -3,6 +3,8 @@ title: "个护与家居日用品直邮欧盟前：清关、商标与安全资料
 description: "为剃须刀、护肤小工具、收纳用品、玩具等日用品准备的欧盟发货前清单，覆盖进口申报、知识产权、产品安全、标签和扣留应对。"
 tldr: "日用品直邮欧盟，风险不只在关税。商业发票、申报信息、商标授权、标签、责任人和技术资料必须互相对应；资料缺失或产品存在风险时，货物可能被扣留、拒绝进入欧盟市场，平台链接也可能被下架。"
 pubDate: 2026-09-01
+reviewStatus: reviewed
+productType: 日用与个护
 category: 风险清单
 heroImage: /images/eu-household-goods-import-risk-checklist-hero.webp
 markets: ["欧盟"]

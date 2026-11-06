@@ -1,0 +1,91 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props {
+  articles: CollectionEntry<'articles'>[];
+  contextName?: string;
+}
+const { articles, contextName = '内容' } = Astro.props;
+const categorySlug: Record<string, string> = { 案例分析: 'cases', 法规解读: 'guides', 风险清单: 'checklists' };
+const iso = (date: Date) => date.toISOString().slice(0, 10);
+const markets = ['欧盟', '东南亚', '中东', '拉美'];
+const productTypes = [...new Set(articles.map((a) => a.data.productType))].sort((a, b) => a.localeCompare(b, 'zh-CN'));
+---
+  <div class="market-tabs" role="tablist" aria-label="按市场浏览">
+    {markets.map((market, i) => {
+      const count = articles.filter((a) => a.data.markets.includes(market)).length;
+      return <button type="button" role="tab" id={`market-tab-${i}`} aria-controls={`market-panel-${i}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{market}<small>{count ? `${count} 篇文章` : '内容筹备中'}</small></button>;
+    })}
+  </div>
+  {markets.map((market, i) => <section id={`market-panel-${i}`} role="tabpanel" aria-labelledby={`market-tab-${i}`} tabindex="0" hidden={i !== 0}>
+  <div class="section-head"><h2>{market}{contextName}</h2><span class="count" data-visible-count role="status" aria-live="polite">共 {articles.filter((a) => a.data.markets.includes(market)).length} 篇</span></div>
+  {articles.every((a) => !a.data.markets.includes(market)) && <p>内容筹备中。文章经人工审核后开放阅读。</p>}
+  {articles.some((a) => a.data.markets.includes(market)) && (
+    <div class="product-filters" role="group" aria-label={`${market}商品类别筛选`}>
+      <button type="button" data-product-filter="all" aria-pressed="true">全部 <span>{articles.filter((a) => a.data.markets.includes(market)).length}</span></button>
+      {productTypes.map((productType) => {
+        const count = articles.filter((a) => a.data.markets.includes(market) && a.data.productType === productType).length;
+        return count > 0 && <button type="button" data-product-filter={productType} aria-pressed="false">{productType} <span>{count}</span></button>;
+      })}
+    </div>
+  )}
+  <div style="margin-top:1.4rem;">
+    {articles.length === 0 && <p class="meta">内容筹备中，敬请期待。</p>}
+    {articles.filter((a) => a.data.markets.includes(market)).map((a) => (
+      <a class="card" data-product-type={a.data.productType} href={`/${categorySlug[a.data.category]}/${a.id}/`}>
+        <div class="card-head">
+          <span class="seal sm">{a.data.category}</span>
+          <h3>{a.data.title}</h3>
+          {a.data.heroImage && (
+            <span class="thumb"><img src={a.data.heroImage} alt="" loading="lazy" width="264" height="176" /></span>
+          )}
+        </div>
+        <p>{a.data.description}</p>
+        <p class="meta-line">
+          <span>{iso(a.data.pubDate)}</span>
+          {a.data.markets.map((m) => <span class="tag">{m}</span>)}
+        </p>
+      </a>
+    ))}
+  </div>
+  </section>)}
+  <noscript><p>欧盟文章可直接阅读；东南亚、中东、拉美内容筹备中。</p></noscript>
+<script>
+  document.querySelectorAll<HTMLElement>('.product-filters').forEach((group) => {
+    const section = group.closest('section')!;
+    const buttons = Array.from(group.querySelectorAll<HTMLButtonElement>('[data-product-filter]'));
+    const cards = Array.from(section.querySelectorAll<HTMLElement>('[data-product-type]'));
+    buttons.forEach((button) => button.addEventListener('click', () => {
+      const selected = button.dataset.productFilter;
+      buttons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+      let count = 0;
+      cards.forEach((card) => {
+        card.hidden = selected !== 'all' && card.dataset.productType !== selected;
+        if (!card.hidden) count++;
+      });
+      const status = section.querySelector('[data-visible-count]');
+      if (status) status.textContent = `${selected === 'all' ? '共' : '筛选结果：'} ${count} 篇`;
+    }));
+  });
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+  function activate(tab: HTMLButtonElement) {
+    for (const item of tabs) {
+      const selected = item === tab;
+      item.setAttribute('aria-selected', String(selected));
+      item.tabIndex = selected ? 0 : -1;
+      const panel = document.getElementById(item.getAttribute('aria-controls')!);
+      if (panel) panel.hidden = !selected;
+    }
+  }
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => activate(tab));
+    tab.addEventListener('keydown', (event) => {
+      let next = index;
+      if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+      else if (event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = tabs.length - 1;
+      else return;
+      event.preventDefault(); activate(tabs[next]); tabs[next].focus();
+    });
+  });
+</script>

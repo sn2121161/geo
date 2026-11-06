@@ -3,6 +3,8 @@ title: "日用品卖往欧盟前，商标要查什么：从检索到 Listing"
 description: "面向剃须刀、化妆刷、家居收纳、玩具等日用品卖家的欧盟商标实务指南，说明检索范围、授权链、包装、关键词与平台仓储的核查方法。"
 tldr: "欧盟商标风险不只在商品上的 Logo。标题、图片、搜索词、包装和入仓资料都可能构成商业使用。每个 SKU 都应查清品牌权利、实际货源、页面表述和销售市场；中国商标或国内采购发票，不能当然证明可在欧盟销售。"
 pubDate: 2026-09-01
+reviewStatus: reviewed
+productType: 日用与个护
 category: 法规解读
 heroImage: /images/eu-ecommerce-trademark-checklist-household-goods-hero.webp
 markets: ["欧盟"]

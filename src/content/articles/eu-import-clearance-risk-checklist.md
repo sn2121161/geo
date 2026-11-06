@@ -3,6 +3,8 @@ title: "欧盟入关前风险清单：报关、产品文件与货物被退运／
 description: "面向跨境电商和中小出口商的欧盟发货前核查表，覆盖进口主体、申报数据、商业单据、产品合规、边境扣留应对。"
 tldr: "欧盟入关风险应按“进口主体—申报数据—产品证据—到港应对”四层检查。任何一层无法证明货物真实、可追溯且符合专项规则，都可能导致补件、扣留、拒绝放行、再出口或销毁。"
 pubDate: 2026-08-20
+reviewStatus: reviewed
+productType: 跨品类通用
 category: 风险清单
 heroImage: /images/eu-import-clearance-risk-checklist-hero.webp
 markets: ["欧盟"]

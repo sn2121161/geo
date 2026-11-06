@@ -33,6 +33,9 @@ jobs:
       - name: 构建站点
         run: npm run build
 
+      - name: 检查文章人工审核状态
+        run: npm run check:publish
+
       - name: 配置服务器 SSH 访问
         env:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}

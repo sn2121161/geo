@@ -3,6 +3,8 @@ title: "Amazon、Temu 等平台上架前的商标与授权链自查清单"
 description: "一份适用于欧盟站跨境电商卖家的上架前清单：从品牌词、图片、兼容性表述到采购发票、授权书、FBA 入仓批次和投诉预案，逐项排查商标风险。"
 tldr: "上架前最重要的不是先把链接做出来，而是先证明“这个商品、这个品牌词、这张图片、这批货”可以一起使用。对欧盟站卖家而言，凡是涉及他人品牌的 SKU，都应完成品牌检索、授权链核验、页面审查和批次留档；任一环证据不足，就先不要入仓和投放广告。"
 pubDate: 2026-08-18
+reviewStatus: reviewed
+productType: 跨品类通用
 category: 风险清单
 heroImage: /images/eu-ecommerce-trademark-checklist-hero.webp
 markets: ["欧盟"]

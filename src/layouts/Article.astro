@@ -1,5 +1,6 @@
 ---
 import Base from './Base.astro';
+import { site } from '../lib/site';
 
 interface Faq { q: string; a: string }
 interface Source { name: string; url: string }
@@ -10,6 +11,10 @@ interface Props {
   tldr: string;
   pubDate: Date;
   updatedDate?: Date;
+  verifiedDate?: Date;
+  reviewedDate?: Date;
+  reviewStatus?: 'reviewed' | 'pending';
+  revisions?: { date: Date; summary: string }[];
   category: string;
   heroImage?: string;
   markets: string[];
@@ -18,20 +23,23 @@ interface Props {
   sources: Source[];
 }
 
-const { title, description, tldr, pubDate, updatedDate, category, heroImage, markets, tags, faqs, sources } =
+const { title, description, tldr, pubDate, updatedDate, verifiedDate, reviewedDate, reviewStatus = 'pending', revisions = [], category, heroImage, markets, tags, faqs, sources } =
   Astro.props;
 
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const authorUrl = new URL('/about/#author', Astro.site).href;
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
+  '@id': `${pageUrl}#article`,
   headline: title,
   description,
   inLanguage: 'zh-CN',
   datePublished: pubDate.toISOString(),
   ...(updatedDate && { dateModified: updatedDate.toISOString() }),
   ...(heroImage && { image: new URL(heroImage, Astro.site).href }),
-  author: { '@type': 'Organization', name: '出海合规观察' },
-  publisher: { '@type': 'Organization', name: '出海合规观察' },
+  author: { '@type': 'Person', '@id': authorUrl, name: site.author, url: authorUrl },
+  publisher: { '@id': new URL('/#organization', Astro.site).href },
   mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).href,
   keywords: [...tags, ...markets].join(', '),
 };
@@ -59,11 +67,12 @@ const breadcrumbSchema = {
       name: category,
       item: new URL(Astro.url.pathname.split('/').slice(0, 2).join('/') + '/', Astro.site).href,
     },
-    { '@type': 'ListItem', position: 3, name: title },
+    { '@type': 'ListItem', position: 3, name: title, item: pageUrl },
   ],
 };
 
-const schemas = [articleSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])];
+const pageSchema = { '@context': 'https://schema.org', '@type': 'WebPage', '@id': pageUrl, url: pageUrl, isPartOf: { '@id': new URL('/#website', Astro.site).href }, mainEntity: { '@id': `${pageUrl}#article` } };
+const schemas = [pageSchema, articleSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])];
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
@@ -72,8 +81,12 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
     <p style="margin:0 0 0.2rem;"><span class="seal lg">{category}</span></p>
     <h1>{title}</h1>
 
+    <p class="article-credit">作者：<a href="/about/#author">{site.author}</a> · {reviewStatus === 'reviewed' ? '人工审核：常州天微AI实验室' : '本次修订待常州天微AI实验室人工复审'}</p>
+    {reviewStatus === 'pending' && <p class="review-notice"><strong>待人工复审稿。</strong>以下为本地修订版本，尚未完成针对本次改稿的人工审核。</p>}
     <div class="dossier">
       <span><span class="k">刊发</span> {iso(pubDate)}</span>
+      {reviewStatus === 'reviewed' && reviewedDate && <span><span class="k">审核</span> {iso(reviewedDate)}</span>}
+      {verifiedDate && <span><span class="k">来源核对</span> {iso(verifiedDate)}（非人工审核日期）</span>}
       {updatedDate && <span><span class="k">修订</span> {iso(updatedDate)}</span>}
       {markets.length > 0 && <span><span class="k">涉及市场</span> {markets.join(' / ')}</span>}
       {tags.length > 0 && <span><span class="k">索引</span> {tags.join(' · ')}</span>}
@@ -82,7 +95,7 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
     {heroImage && (
       <figure class="hero">
         <img src={heroImage} alt={title} width="1400" height="933" loading="eager" />
-        <figcaption>题图:出海合规观察原创插画</figcaption>
+        <figcaption>题图：出海合规观察原创插画</figcaption>
       </figure>
     )}
 
@@ -113,8 +126,11 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
             <li><a href={s.url} rel="noopener noreferrer">{s.name}</a></li>
           ))}
         </ul>
-        <p class="disclaimer">本文基于公开资料整理,不构成法律意见。文中信息以发布日为准,法规可能已更新。</p>
+
       </section>
     )}
+    {revisions.length > 0 && <section class="sources"><h2>修订记录</h2><ul>{revisions.map((r) => <li><time datetime={iso(r.date)}>{iso(r.date)}</time>：{r.summary}</li>)}</ul></section>}
+    <p class="disclaimer">本文基于公开资料整理，不构成法律意见。文中信息以发布日为准，法规可能已更新。</p>
+    <p class="article-credit">发现错误或资料更新？<a href="/about/#corrections">联系作者纠错</a>。</p>
   </article>
 </Base>

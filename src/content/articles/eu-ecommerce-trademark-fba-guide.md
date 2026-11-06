@@ -3,6 +3,8 @@ title: "跨境电商卖家在欧盟使用品牌词：商标、平台展示与 FB
 description: "面向欧盟站跨境卖家的商标实操指南：解释商品标题、主图、关键词、兼容性描述、仓储配送与平台投诉之间的关系，并给出上架前必须留存的授权和来源证据。"
 tldr: "在欧盟站销售时，商品标题、图片、广告和包装中的品牌词都可能构成商标使用。FBA 只处理仓储配送，不替卖家取得授权；第三方卖家应在上架前确认品牌、图形标志和兼容性表述的依据，并按 SKU 留存可追溯的来源与授权材料。"
 pubDate: 2026-08-18
+reviewStatus: reviewed
+productType: 跨品类通用
 category: 法规解读
 heroImage: /images/eu-ecommerce-trademark-fba-guide-hero.webp
 markets: ["欧盟"]

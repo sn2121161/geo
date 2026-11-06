@@ -57,6 +57,6 @@ Allow: /
 User-agent: PetalBot
 Allow: /
 
-Sitemap: https://www.example.com/sitemap-index.xml
+Sitemap: https://oversea-observe.online/sitemap-index.xml
 # llms.txt 为 AI 提供全站内容索引(见 https://llmstxt.org)
-# AI-Index: https://www.example.com/llms.txt
+# AI-Index: https://oversea-observe.online/llms.txt
