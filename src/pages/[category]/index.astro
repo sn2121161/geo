@@ -23,9 +23,14 @@ const articles = (
 <Base title={name} description={desc}>
   <div class="masthead">
     <p class="kicker">{slug.toUpperCase()}</p>
-    <h1 style="font-size:2rem;"><span class="seal lg" style="margin-right:0.6rem;">{name}</span></h1>
+    <h1 class="category-title"><span class="seal">{name}</span></h1>
     <p class="sub">{desc}</p>
   </div>
 
   <ArticleBrowser articles={articles} contextName={name} />
 </Base>
+
+<style>
+  .masthead .category-title { margin: 0.6rem 0 1.1rem; }
+  .category-title .seal { font-size: clamp(1.65rem, 3vw, 2rem); padding: 0.38em 0.55em; }
+</style>
