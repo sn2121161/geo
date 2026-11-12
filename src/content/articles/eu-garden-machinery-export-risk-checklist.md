@@ -3,7 +3,8 @@ title: "小型园林机械卖往欧盟前：割草机、绿篱机与水泵的 22
 description: "面向跨境卖家的欧盟小型园林机械发货前核查表，覆盖产品归类、技术文件、噪声、标识、说明书、责任主体、页面信息和售后追溯。"
 tldr: "把小型园林机械卖往欧盟前，应为每个 SKU 建立“实际配置—适用规则—技术文件—标签说明书—欧盟责任主体”的对应记录。以下 22 项用于发现缺口，不是统一认证模板；不适用项要记录理由，安全或法定义务存在未解决缺口时，不应让受影响 SKU 发货或上架。"
 pubDate: 2026-11-11
-reviewStatus: pending
+reviewStatus: reviewed
+reviewedDate: 2026-11-12
 revisions: []
 productType: 小型园林机械
 category: 风险清单
