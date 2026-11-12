@@ -28,7 +28,6 @@ sources:
     url: "https://eur-lex.europa.eu/eli/reg/2019/1020/2024-05-23/eng"
   - name: "欧盟委员会：机械产品与 CE 标志说明"
     url: "https://single-market-economy.ec.europa.eu/sectors/mechanical-engineering/machinery_en"
-draft: true
 ---
 
 第一批货准备进欧盟仓时，把机器放在桌上，连同铭牌、说明书和测试文件一起看。只问“有没有 CE”不够；噪声文件、目的国语言说明书和欧盟境内联络主体，常常是在这个环节漏掉的。
