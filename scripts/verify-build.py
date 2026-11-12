@@ -45,5 +45,7 @@ for name in ['robots.txt','llms.txt']:
  content=(root/name).read_text()
  if 'example.com' in content or content!=Path('public',name).read_text() or content!=Path(name).read_text():errors.append(f'{name}: placeholder or drift')
 report={'pages':len(list(root.rglob('*.html'))),'jsonLdBlocks':blocks,'errors':errors}
-Path('docs/review/build-validation.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+report_path=Path('docs/technical-guidance/reports/build-validation.json')
+report_path.parent.mkdir(parents=True,exist_ok=True)
+report_path.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps(report,ensure_ascii=False,indent=2));raise SystemExit(bool(errors))
