@@ -26,7 +26,6 @@ sources:
     url: "https://eur-lex.europa.eu/eli/reg/2019/1020/2024-05-23/eng"
   - name: "欧盟委员会：Safety Gate 企业义务说明"
     url: "https://webgate.acceptance.ec.europa.eu/safety-gate/screen/pages/obligationsForBusinesses"
-draft: true
 ---
 
 这份表可交给采购、工程、运营、仓储一起填，适用于割草机、修边机、绿篱机、便携式链锯、吹叶机、小型水泵及相近产品。每一项填“已完成／待补充／不适用”，同时记下文件位置、负责人和处理日期。
